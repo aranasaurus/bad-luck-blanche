@@ -46,6 +46,11 @@ texture={
 "svg/scale": 1.0
 }
 
+[layer_names]
+
+2d_physics/layer_1="World"
+2d_physics/layer_2="Player"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
