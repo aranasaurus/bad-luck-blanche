@@ -131,7 +131,7 @@ collision_layer = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 2.24986 )
+position = Vector2( 0, 2.06152 )
 texture = ExtResource( 1 )
 hframes = 4
 frame = 3
