@@ -1,9 +1,10 @@
 extends KinematicBody2D
 
-const ThoughtBubble = preload("res://ThoughtBubble.tscn")
 export var speed := 42
 
 onready var animationPlayer := $AnimationPlayer
+onready var bubble := find_node("ThoughtBubble")
+onready var thoughtTimer := $ThoughtTimer
 
 func _physics_process(_delta: float) -> void:
 	var velocity = Vector2.ZERO
@@ -31,8 +32,6 @@ func _process(_delta: float) -> void:
 
 func _unhandled_key_input(event: InputEventKey) -> void:
 	if event.is_action("Say"):
-		say("Hi!")
+		bubble.show()
+		bubble.text = "Sure is dark in here."
 
-func say(text: String):
-	var bubble := ThoughtBubble.instance()
-	bubble.say(text, self)

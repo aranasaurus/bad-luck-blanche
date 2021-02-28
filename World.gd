@@ -1,7 +1,6 @@
 tool
 extends Node
 
-onready var darkness := $CanvasModulate
 onready var blanche := $Blanche
 onready var light := $Blanche/Light2D
 
@@ -20,12 +19,9 @@ func turn_lights_on(new_value: bool):
 	lights_on = new_value
 
 	if lights_on:
-		if darkness:
-			darkness.hide()
 		if light:
 			light.hide()
 	else:
-		if darkness:
-			darkness.show()
 		if light:
 			light.show()
+
