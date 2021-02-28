@@ -6,6 +6,10 @@ onready var animationPlayer := $AnimationPlayer
 onready var bubble := find_node("ThoughtBubble")
 onready var thoughtTimer := $ThoughtTimer
 
+
+func think(text: String) -> void:
+	bubble.show_text(text)
+
 func _physics_process(_delta: float) -> void:
 	var velocity = Vector2.ZERO
 	velocity.y -= Input.get_action_strength("Up") * speed
@@ -29,8 +33,4 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_pressed("Down") or not moving:
 		animationPlayer.play("Down")
-
-func _unhandled_key_input(event: InputEventKey) -> void:
-	if event.is_action("Help"):
-		bubble.show_text("Sure is dark in here.")
 
