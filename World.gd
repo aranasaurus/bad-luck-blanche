@@ -18,10 +18,5 @@ func _unhandled_key_input(event):
 func turn_lights_on(new_value: bool):
 	lights_on = new_value
 
-	if lights_on:
-		if light:
-			light.hide()
-	else:
-		if light:
-			light.show()
-
+	if light:
+		light.visible = !lights_on
