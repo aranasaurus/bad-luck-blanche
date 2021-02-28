@@ -32,6 +32,5 @@ func _process(_delta: float) -> void:
 
 func _unhandled_key_input(event: InputEventKey) -> void:
 	if event.is_action("Help"):
-		bubble.show()
-		bubble.text = "Sure is dark in here."
+		bubble.show_text("Sure is dark in here.")
 
