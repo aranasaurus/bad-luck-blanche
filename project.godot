@@ -8,16 +8,6 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Node2D",
-"class": "ThoughtBubble",
-"language": "GDScript",
-"path": "res://ThoughtBubble.gd"
-} ]
-_global_script_class_icons={
-"ThoughtBubble": ""
-}
-
 [application]
 
 config/name="Bad Luck Blanche"
