@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://tiles/Room_Builder_32x32.png" type="Texture" id=1]
 [ext_resource path="res://Blanche.tscn" type="PackedScene" id=2]
@@ -799,7 +799,10 @@ points = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
 } ]
 25/z_index = 0
 
-[sub_resource type="CanvasItemMaterial" id=30]
+[sub_resource type="RectangleShape2D" id=30]
+extents = Vector2( 30, 10 )
+
+[sub_resource type="CanvasItemMaterial" id=31]
 
 [node name="World" type="Node"]
 script = ExtResource( 4 )
@@ -818,15 +821,18 @@ region_rect = Rect2( 66.1931, 247.148, 60.0007, 36.0643 )
 
 [node name="TV" parent="Table" instance=ExtResource( 7 )]
 
-[node name="Light2D" parent="Table/TV/CanvasLayer" index="0"]
-position = Vector2( 364, 56 )
+[node name="InteractionArea" type="Area2D" parent="Table/TV"]
+position = Vector2( -1, 29 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Table/TV/InteractionArea"]
+position = Vector2( 0, 26 )
+shape = SubResource( 30 )
 
 [node name="Blanche" parent="." instance=ExtResource( 2 )]
 position = Vector2( 318, 185 )
 
 [node name="Light2D" type="Light2D" parent="Blanche"]
-visible = false
-material = SubResource( 30 )
+material = SubResource( 31 )
 position = Vector2( -2, -1 )
 scale = Vector2( 1.1, 1.1 )
 texture = ExtResource( 3 )
@@ -843,13 +849,16 @@ current = true
 
 [node name="AmbientLight" type="Light2D" parent="."]
 visible = false
-position = Vector2( 318.5, 183.5 )
+position = Vector2( 318, 184 )
 scale = Vector2( 15.6719, 9.26562 )
 texture = ExtResource( 8 )
 energy = 0.65
 mode = 2
 shadow_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
+[connection signal="body_entered" from="Table/TV/InteractionArea" to="." method="_on_InteractionArea_body_entered"]
+[connection signal="body_exited" from="Table/TV/InteractionArea" to="." method="_on_InteractionArea_body_exited"]
 [connection signal="timeout" from="IntroTimer" to="." method="_on_IntroTimer_timeout"]
-
-[editable path="Table/TV"]

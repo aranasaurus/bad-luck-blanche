@@ -5,6 +5,7 @@ onready var blanche := $Blanche
 onready var maskLight := $Blanche/Light2D
 onready var ambientLight := $AmbientLight
 onready var intro_timer := $IntroTimer
+onready var tv := $Table/TV
 
 export var lights_on := false setget turn_lights_on
 
@@ -20,11 +21,13 @@ var _recentlyDisplayedHints := {
 var _introStep = 0
 var _introComplete = false
 var _hasTurnedLightsOnBefore = false
+var _inRangeOfTV = false
 
 func _ready():
 	# The lights_on export var is really only used to keep the lights on while
 	# in the editor. This makes sure we start the game with the lights off.
 	self.lights_on = false
+	blanche.sticky_direction = "Down"
 	randomize()
 
 func _process(_delta: float) -> void:
@@ -40,6 +43,15 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_just_pressed("Chat"):
 		blanche.chit_chat(true)
+
+	if Input.is_action_just_pressed("TV"):
+		interact_with_tv()
+
+func interact_with_tv():
+	if _inRangeOfTV:
+		blanche.think("I can't make the knobs work in this incorporeal form!", 4.0, true)
+	else:
+		blanche.think("The TV's way over there, I can't touch it from here!", 4.0, true)
 
 func turn_lights_on(new_value: bool):
 	lights_on = new_value
@@ -112,4 +124,10 @@ func _on_IntroTimer_timeout() -> void:
 
 	blanche.chit_chat_enabled = _hasTurnedLightsOnBefore
 
+func _on_InteractionArea_body_entered(_body: Node) -> void:
+	_inRangeOfTV = true
+	blanche.sticky_direction = "Up"
 
+func _on_InteractionArea_body_exited(_body: Node) -> void:
+	_inRangeOfTV = false
+	blanche.sticky_direction = "Down"

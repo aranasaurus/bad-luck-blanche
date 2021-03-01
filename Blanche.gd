@@ -24,6 +24,7 @@ var _idleChatter := PoolStringArray([
 
 var current_bubble: Node
 var bubbles := []
+var sticky_direction
 
 func think(text: String, duration: float = 3.0, urgent: bool = false) -> void:
 	if urgent:
@@ -71,19 +72,22 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide(velocity)
 
 func _process(_delta: float) -> void:
-	var moving = false
+	var idle = true
 	if Input.is_action_pressed("Left"):
 		animationPlayer.play("Left")
-		moving = true
+		idle = false
 	if Input.is_action_pressed("Right"):
 		animationPlayer.play("Right")
-		moving = true
+		idle = false
 	if Input.is_action_pressed("Up"):
 		animationPlayer.play("Up")
-		moving = true
-
-	if Input.is_action_pressed("Down") or not moving:
+		idle = false
+	if Input.is_action_pressed("Down"):
 		animationPlayer.play("Down")
+		idle = false
+
+	if idle and sticky_direction != null and animationPlayer.has_animation(sticky_direction):
+		animationPlayer.play(sticky_direction)
 
 func _on_ChitChatTimer_timeout() -> void:
 	chit_chat()
