@@ -817,12 +817,11 @@ region_rect = Rect2( 66.1931, 247.148, 60.0007, 36.0643 )
 
 [node name="TV" parent="Table" instance=ExtResource( 7 )]
 
+[node name="Light2D" parent="Table/TV/CanvasLayer" index="0"]
+position = Vector2( 364, 56 )
+
 [node name="Blanche" parent="." instance=ExtResource( 2 )]
 position = Vector2( 318, 185 )
-
-[node name="Camera2D" type="Camera2D" parent="Blanche"]
-position = Vector2( 1, -4 )
-current = true
 
 [node name="Light2D" type="Light2D" parent="Blanche"]
 light_mask = 0
@@ -837,4 +836,10 @@ wait_time = 2.0
 one_shot = true
 autostart = true
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 319, 181 )
+current = true
+
 [connection signal="timeout" from="IntroTimer" to="." method="_on_IntroTimer_timeout"]
+
+[editable path="Table/TV"]

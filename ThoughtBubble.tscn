@@ -51,7 +51,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.6 ),
+"times": PoolRealArray( 0.4 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
@@ -167,6 +167,7 @@ script = ExtResource( 3 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 visible = false
+modulate = Color( 1, 1, 1, 0 )
 light_mask = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -230,10 +231,12 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Trail" type="Sprite" parent="."]
+visible = false
 light_mask = 0
 position = Vector2( 6, -10 )
 texture = ExtResource( 4 )
 hframes = 4
+frame = 3
 region_enabled = true
 region_rect = Rect2( 0, 31, 128, 16 )
 region_filter_clip = true

@@ -12,17 +12,13 @@ var _darknessHints := PoolStringArray([
 	"Who turned out the [L]ights?"
 ])
 
-var _defaultHints := PoolStringArray([
-	"I feel sluggish"
-])
-
 var _recentlyDisplayedHints := {
-	"darkness": PoolStringArray(),
-	"default": PoolStringArray()
+	"darkness": PoolStringArray()
 }
 
 var _introStep = 0
-var _freeHintsIntroStep = 3
+var _introComplete = false
+var _hasTurnedLightsOnBefore = false
 
 func _ready():
 	# The lights_on export var is really only used to keep the lights on while
@@ -34,26 +30,50 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Lights"):
 		self.lights_on = !lights_on
 	if Input.is_action_just_pressed("Help"):
-		blanche.think(get_hint())
-		if _introStep == _freeHintsIntroStep:
-			intro_timer.stop()
+		var hint = get_hint()
+		if hint:
+			blanche.think(hint, 3.0, true)
+		else:
+			blanche.chit_chat()
 
 func turn_lights_on(new_value: bool):
 	lights_on = new_value
+	if !_hasTurnedLightsOnBefore and lights_on:
+		_hasTurnedLightsOnBefore = true
+		intro_timer.stop()
+		blanche.clear_thoughts()
+
+		blanche.think("!!! I'm a ghost?!", 2.5, true)
+		blanche.think("Where'd my body go?! I've got a series finale to watch!")
+		blanche.chit_chat_enabled = true
 
 	if light:
 		light.visible = !lights_on
 
-func get_hint() -> String:
-	if !lights_on:
-		return get_next_hint("darkness")
-	else:
-		return get_next_hint("default")
 
-func get_next_hint(type: String) -> String:
+
+func get_hint():
+	if !lights_on:
+		if _darknessHints.empty():
+			_darknessHints = _recentlyDisplayedHints["darkness"]
+			_recentlyDisplayedHints["darkness"] = PoolStringArray([])
+		else:
+			var hint = _darknessHints[0]
+			_darknessHints.remove(0)
+			var recent = _recentlyDisplayedHints["darkness"]
+			recent.append(hint)
+			_recentlyDisplayedHints["darkness"] = recent
+			return hint
+
+	return null
+
+func get_next_hint(type: String):
 	match type:
 		"darkness":
-			if !_darknessHints.empty():
+			if _darknessHints.empty():
+				_darknessHints = _recentlyDisplayedHints[type]
+				_recentlyDisplayedHints[type] = PoolStringArray([])
+			else:
 				var hint = _darknessHints[0]
 				_darknessHints.remove(0)
 				var recent = _recentlyDisplayedHints["darkness"]
@@ -61,47 +81,29 @@ func get_next_hint(type: String) -> String:
 				_recentlyDisplayedHints["darkness"] = recent
 				return hint
 
-	# Handle the "default" case.
-	if _defaultHints.empty():
-		# Default hints have all been shown. Refill it.
-		var recentHints := Array(_recentlyDisplayedHints["default"] as PoolStringArray)
-		recentHints.shuffle()
-		_defaultHints = PoolStringArray(recentHints)
-		_recentlyDisplayedHints["default"] = PoolStringArray([])
+	return null
 
-		# if we were asked for a non-default hint, and the default hints was empty,
-		# Reset the original type as well.
-		match type:
-			"darkness":
-				_darknessHints = _recentlyDisplayedHints[type]
-				_recentlyDisplayedHints[type] = PoolStringArray([])
-
-		# With everything reset we can try again and shouldn't enter this path again.
-		return get_next_hint(type)
-	else:
-		var hint = _defaultHints[0]
-		_defaultHints.remove(0)
-		var recent = _recentlyDisplayedHints["default"]
-		recent.append(hint)
-		_recentlyDisplayedHints["default"] = recent
-		return hint
-
-
+var _introHelpMessage1 = "[H]mmm. What a pickle I've found myself in."
+var _introHelpMessage2 = "[H]ow am I going to see the ending of that finale?!"
+var _introHelpMessage = 1
 func _on_IntroTimer_timeout() -> void:
-	match _introStep:
-		0:
-			_introStep += 1
-			blanche.think("What happened? Where's my Girls!?!!")
-			intro_timer.start(6)
-		1:
-			_introStep += 1
-			blanche.think("The ad-break will surely be over soon!")
-			intro_timer.start(6)
-		2:
-			_introStep += 1
-			blanche.think("I need to get my buns to a TV, pronto!")
-			intro_timer.start(16)
-		_freeHintsIntroStep:
-			blanche.think(get_hint())
-			intro_timer.start(30)
+	if _introComplete:
+		if _introHelpMessage == 1:
+			blanche.think(_introHelpMessage1, 3)
+			_introHelpMessage = 2
+		else:
+			blanche.think(_introHelpMessage2, 3)
+			_introHelpMessage = 1
+
+		if !_hasTurnedLightsOnBefore:
+			intro_timer.start(15)
+	else:
+		blanche.think("What happened? Where's my 'Girls!?\nI'm gonna miss the ending!!", 2.5, true)
+		blanche.think("The ad-break will surely be over soon!", 3)
+		blanche.think("I need to get my buns in front of a [T]elevision, pronto!", 3.5)
+		_introComplete = true
+		intro_timer.start(23)
+
+	blanche.chit_chat_enabled = _hasTurnedLightsOnBefore
+
 
