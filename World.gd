@@ -107,10 +107,10 @@ var _introHelpMessage = 1
 func _on_IntroTimer_timeout() -> void:
 	if _introComplete:
 		if _introHelpMessage == 1:
-			blanche.think(_introHelpMessage1, 3)
+			blanche.think(_introHelpMessage1)
 			_introHelpMessage = 2
 		else:
-			blanche.think(_introHelpMessage2, 3)
+			blanche.think(_introHelpMessage2)
 			_introHelpMessage = 1
 
 		if !_hasTurnedLightsOnBefore:
