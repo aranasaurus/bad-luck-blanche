@@ -11,7 +11,7 @@ onready var animationPlayer := $AnimationPlayer
 onready var chitChatTimer := $ChitChatTimer
 
 var _idleChatter := PoolStringArray([
-	"I seem to have lost the pep in my step.",
+	"I seem to have lost some pep from my step.",
 	"Where's the clicker?",
 	"It's cold in here. Are you cold?",
 	"I feel so light and airy!",
@@ -52,13 +52,13 @@ func clear_thoughts() -> void:
 		current_bubble.queue_free()
 		current_bubble = null
 
-func chit_chat() -> void:
-	if !chit_chat_enabled:
+func chit_chat(force: bool = false) -> void:
+	if !chit_chat_enabled and !force:
 		return
 
 	var index = randi() % _idleChatter.size()
 	chitChatTimer.start(chit_chat_interval)
-	if current_bubble == null:
+	if current_bubble == null or force:
 		think(_idleChatter[index])
 
 func _physics_process(_delta: float) -> void:

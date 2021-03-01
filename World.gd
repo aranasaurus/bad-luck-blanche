@@ -29,12 +29,16 @@ func _ready():
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Lights"):
 		self.lights_on = !lights_on
+
 	if Input.is_action_just_pressed("Help"):
 		var hint = get_hint()
 		if hint:
 			blanche.think(hint, 3.0, true)
 		else:
 			blanche.chit_chat()
+
+	if Input.is_action_just_pressed("Chat"):
+		blanche.chit_chat(true)
 
 func turn_lights_on(new_value: bool):
 	lights_on = new_value
@@ -49,8 +53,6 @@ func turn_lights_on(new_value: bool):
 
 	if light:
 		light.visible = !lights_on
-
-
 
 func get_hint():
 	if !lights_on:
