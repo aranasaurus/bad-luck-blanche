@@ -2,7 +2,8 @@ tool
 extends Node
 
 onready var blanche := $Blanche
-onready var light := $Blanche/Light2D
+onready var maskLight := $Blanche/Light2D
+onready var ambientLight := $AmbientLight
 onready var intro_timer := $IntroTimer
 
 export var lights_on := false setget turn_lights_on
@@ -51,8 +52,11 @@ func turn_lights_on(new_value: bool):
 		blanche.think("Where'd my body go?! I've got a series finale to watch!")
 		blanche.chit_chat_enabled = true
 
-	if light:
-		light.visible = !lights_on
+	if maskLight:
+		maskLight.visible = !lights_on
+
+	if ambientLight:
+		ambientLight.visible = lights_on
 
 func get_hint():
 	if !lights_on:
