@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "ThoughtBubbleSpawner",
+"language": "GDScript",
+"path": "res://ThoughtBubbleSpawner.gd"
+} ]
+_global_script_class_icons={
+"ThoughtBubbleSpawner": "res://sprites/thought_bubble_trail.png"
+}
+
 [application]
 
 config/name="Bad Luck Blanche"
