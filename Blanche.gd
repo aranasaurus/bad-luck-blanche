@@ -20,7 +20,7 @@ var _idleChatter := PoolStringArray([
 	"\"Your heart is true, you're a friend and a confidaaaant\""
 ])
 
-var sticky_direction
+var sticky_direction: String
 
 func think(text: String, duration: float = 3.0, urgent: bool = false) -> void:
 	thoughtBubbleSpawner.show_bubble(text, duration, urgent)

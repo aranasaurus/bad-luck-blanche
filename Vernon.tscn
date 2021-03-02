@@ -1,11 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://sprites/Old_man_Josh_32x32.png" type="Texture" id=1]
+[ext_resource path="res://ThoughtBubbleSpawner.gd" type="Script" id=2]
+[ext_resource path="res://Vernon.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 13, 4 )
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32, 12 )
+
 [node name="Vernon" type="KinematicBody2D"]
+script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -16,3 +22,20 @@ texture = ExtResource( 1 )
 hframes = 48
 vframes = 10
 frame = 1
+
+[node name="ThoughtBubbleSpawner" type="Node2D" parent="."]
+position = Vector2( 16, -41 )
+script = ExtResource( 2 )
+
+[node name="SnoreTimer" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
+autostart = true
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource( 2 )
+
+[connection signal="bubbles_finished" from="ThoughtBubbleSpawner" to="." method="_on_ThoughtBubbleSpawner_bubbles_finished"]
+[connection signal="timeout" from="SnoreTimer" to="." method="_on_SnoreTimer_timeout"]

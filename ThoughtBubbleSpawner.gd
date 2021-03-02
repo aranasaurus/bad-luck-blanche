@@ -1,6 +1,8 @@
 extends Node2D
 class_name ThoughtBubbleSpawner, "res://sprites/thought_bubble_trail.png"
 
+signal bubbles_finished
+
 const ThoughtBubble = preload("res://ThoughtBubble.tscn")
 
 var current_bubble: Node
@@ -45,3 +47,5 @@ func _on_ThoughtBubble_finished() -> void:
 	current_bubble = bubbles.pop_front()
 	if current_bubble:
 		add_child(current_bubble)
+	else:
+		emit_signal("bubbles_finished")
